@@ -35,10 +35,35 @@
 </head>
 
 <body>
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyDd5SAurZig6mVDssmN_HKAeV-fCWBq2Sg",
+    authDomain: "pizza-order-66-28205.firebaseapp.com",
+    projectId: "pizza-order-66-28205",
+    storageBucket: "pizza-order-66-28205.appspot.com",
+    messagingSenderId: "589054183786",
+    appId: "1:589054183786:web:144fafacf2fbf0b03cfd13",
+    measurementId: "G-PVN0K7Y026"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
   <!-- This script installs service_worker.js to provide PWA functionality to
        application. For more information, see:
        https://developers.google.com/web/fundamentals/primers/service-workers -->
   <script>
+
+
     var serviceWorkerVersion = null;
     var scriptLoaded = false;
     function loadMainDartJs() {

@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pizza_order_66/app/enum/enum_menu.dart';
+import 'package:pizza_order_66/database/models/article.dart';
+import 'package:pizza_order_66/database/models/base_pizza.dart';
+import 'package:pizza_order_66/pizza_manager/bloc/pizza_manager_bloc/pizza_manager_bloc.dart';
+import 'package:pizza_order_66/pizza_manager/view/form_article/form_article_page.dart';
 
-class MenuView extends StatelessWidget {
-  const MenuView({super.key});
+import '../../../database/models/pizza.dart';
+
+class PizzaManagerView extends StatelessWidget {
+  const PizzaManagerView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,17 +23,16 @@ class MenuView extends StatelessWidget {
           ),
         ),
         Expanded(
-          flex: 4,
-          child: Container(
-            color: Theme.of(context).canvasColor,
-            child: const MenuList(),
-          ),
-        ),
-        Expanded(
-          flex: 2,
-          child: Container(
-            color: Colors.white,
-            child: const _Paiment(),
+          flex: 5,
+          child: Column(
+            children: [
+              Expanded(
+                child: Container(
+                  color: Theme.of(context).canvasColor,
+                  child: const MenuListManager(),
+                ),
+              ),
+            ],
           ),
         ),
       ],
@@ -68,13 +74,14 @@ class _Slector extends StatelessWidget {
   }
 }
 
-class MenuList extends StatelessWidget {
-  const MenuList({
+class MenuListManager extends StatelessWidget {
+  const MenuListManager({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
+    final state = context.watch<PizzaManagerBloc>().state;
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -91,25 +98,34 @@ class MenuList extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Expanded(
+                        Expanded(
                           child: Text(
-                            'Nom Pizza',
-                            style: TextStyle(
+                            state.listeArticle[index].nom,
+                            style: const TextStyle(
                               fontSize: 20,
                             ),
                           ),
                         ),
-                        const Expanded(
+                        Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Base Pizza',
-                                style: TextStyle(
+                                (state.listeArticle[index].type ==
+                                        TypeArticle.pizza.type)
+                                    ? (state.listeArticle[index] as Pizza)
+                                        .basePizza
+                                        .nom
+                                    : '',
+                                style: const TextStyle(
                                   fontSize: 20,
                                 ),
                               ),
-                              Icon(Icons.eco, color: Colors.lightGreen),
+                              if (state.listeArticle[index].type ==
+                                  TypeArticle.pizza.type)
+                                Icon(Icons.eco, color: Colors.lightGreen)
+                              else
+                                Icon(Icons.eco, color: Colors.transparent),
                             ],
                           ),
                         ),
@@ -117,14 +133,19 @@ class MenuList extends StatelessWidget {
                           child: Column(
                             children: [
                               SizedBox(
-                                // height: 100,
                                 child: Expanded(
                                   child: ListView.builder(
                                     shrinkWrap: true,
                                     primary: true,
-                                    itemBuilder: (context, index) =>
-                                        const Text('Ingrediant'),
-                                    itemCount: 3,
+                                    itemBuilder: (context, indexIngredient) =>
+                                        Text((state.listeArticle[index]
+                                                as Pizza)
+                                            .listeIngrediant[indexIngredient]
+                                            .nom),
+                                    itemCount:
+                                        (state.listeArticle[index] as Pizza)
+                                            .listeIngrediant
+                                            .length,
                                   ),
                                 ),
                               ),
@@ -136,90 +157,27 @@ class MenuList extends StatelessWidget {
                   ),
                 ),
               ),
-              itemCount: 30,
+              itemCount: state.listeArticle.length,
             ),
+          ),
+          ElevatedButton(
+            style: const ButtonStyle(
+              fixedSize: MaterialStatePropertyAll(
+                Size(1000, 100),
+              ),
+            ),
+            onPressed: () => _popUp(context),
+            child: const Text('Ajouter une Pizza'),
           ),
         ],
       ),
     );
   }
-}
 
-class _Paiment extends StatelessWidget {
-  const _Paiment();
-
-  @override
-  Widget build(BuildContext context) {
-    const textstyle = TextStyle(
-      fontSize: 20,
-      color: Colors.black,
-    );
-    return Padding(
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        children: [
-          Expanded(
-            flex: 15,
-            child: SingleChildScrollView(
-              primary: true,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'ORDER',
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 50,
-                  ),
-                  const Text(
-                    'Order 66 : ',
-                    style: textstyle,
-                  ),
-                  ListView.builder(
-                    itemCount: 3,
-                    shrinkWrap: true,
-                    primary: true,
-                    itemBuilder: (context, index) => const Text(
-                      '- Pizza Marguerita',
-                      style: textstyle,
-                    ),
-                  ),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text(
-                            'Total :',
-                            style: textstyle,
-                          ),
-                          Text(
-                            '15 euros 17 centimes',
-                            style: textstyle,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Expanded(
-            child: ElevatedButton(
-              onPressed: () {},
-              child: const Text('PAYER'),
-            ),
-          ),
-        ],
-      ),
+  Future<void> _popUp(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (context) => const FormArticlePage(),
     );
   }
 }

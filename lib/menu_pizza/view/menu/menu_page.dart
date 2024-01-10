@@ -4,7 +4,7 @@ import 'package:pizza_order_66/menu_pizza/bloc/menu/menu_bloc.dart';
 import 'package:pizza_order_66/menu_pizza/view/menu/menu_view.dart';
 
 class MenuPage extends StatelessWidget {
-  const MenuPage({Key? key}) : super(key: key);
+  const MenuPage({super.key});
 
   @override
   Widget build(BuildContext context) {

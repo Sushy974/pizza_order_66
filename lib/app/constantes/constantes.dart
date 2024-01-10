@@ -1,10 +1,9 @@
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 Future<String> getImageUrl(String imagePath) async {
-  final firebase_storage.Reference ref =
-      firebase_storage.FirebaseStorage.instance.ref().child(imagePath);
+  final ref = firebase_storage.FirebaseStorage.instance.ref().child(imagePath);
 
-  final String url = await ref.getDownloadURL();
+  final url = await ref.getDownloadURL();
   return url;
 }
 

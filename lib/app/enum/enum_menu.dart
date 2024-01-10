@@ -18,12 +18,15 @@ extension MenuX on Menu {
   }
 }
 
-class MenuListItems {
-  static List<String> getMenuItems() {
-    return Menu.values
-        .map(
-          (e) => e.name,
-        )
-        .toList();
+enum MenuOrder {
+  order,
+}
+
+extension MenuOrderX on MenuOrder {
+  String get name {
+    switch (this) {
+      case MenuOrder.order:
+        return 'Order';
+    }
   }
 }
