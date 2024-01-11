@@ -39,7 +39,10 @@ abstract class Article {
     return Boisson(description: description, nom: nom);
   }
 
-  factory Article.fromJSON(Map<String, dynamic> map) {
+  factory Article.fromJSON({
+    required Map<String, dynamic> map,
+    required String uid,
+  }) {
     if (map['type'] == TypeArticle.pizza.type.toString()) {
       var listMaps = map['liste_ingredient'] as List<dynamic>;
       var listeIngredient = listMaps.map((ingredientMap) {
@@ -48,6 +51,8 @@ abstract class Article {
       }).toList();
 
       return Pizza(
+        uid: uid,
+        vegetarien: map['vegi'] as bool,
         description: map['description'] as String,
         nom: map['nom'] as String,
         basePizza: getBasePizzaFromString(map['base_pizza'] as String),
@@ -55,14 +60,16 @@ abstract class Article {
       );
     }
 
-    if (map['type'] == TypeArticle.dessert.type) {
+    if (map['type'] == TypeArticle.dessert.type.toString()) {
       return Dessert(
+        uid: uid,
         description: map['description'] as String,
         nom: map['nom'] as String,
         vegetarien: map['vegetarien'] as bool,
       );
     }
     return Boisson(
+      uid: uid,
       description: map['description'] as String,
       nom: map['nom'] as String,
     );

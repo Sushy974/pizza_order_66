@@ -12,6 +12,8 @@ class Boisson implements Article {
   final String nom;
   @override
   final String description;
+  @override
+  Type get type => Boisson;
 
   @override
   Map<String, dynamic> toJSON() {
@@ -21,7 +23,4 @@ class Boisson implements Article {
       'description': description,
     };
   }
-
-  @override
-  Type get type => Boisson;
 }

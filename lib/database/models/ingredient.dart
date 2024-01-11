@@ -43,44 +43,6 @@ extension IngredientEnumX on IngredientEnum {
   }
 }
 
-//
-//   bool get vegetarien {
-//     switch (this) {
-//       case Ingredient.fromage:
-//         return true;
-//       case Ingredient.poivron:
-//         return true;
-//       case Ingredient.champignon:
-//         return true;
-//       case Ingredient.olives:
-//         return true;
-//       case Ingredient.pepperoni:
-//         return false;
-//       case Ingredient.jambon:
-//         return false;
-//     }
-//   }
-// }
-//
-// Ingredient getIngredientFromString(String ingredientStr) {
-//   switch (ingredientStr.toLowerCase()) {
-//     case 'fromage':
-//       return Ingredient.fromage;
-//     case 'poivron':
-//       return Ingredient.poivron;
-//     case 'champignon':
-//       return Ingredient.champignon;
-//     case 'olives':
-//       return Ingredient.olives;
-//     case 'pepperoni':
-//       return Ingredient.pepperoni;
-//     case 'jambon':
-//       return Ingredient.jambon;
-//     // Ajoutez ici des cas supplémentaires pour de nouveaux ingrédients
-//     default:
-//       throw Exception('Ingrédient inconnu: $ingredientStr');
-//   }
-// }
 abstract class Ingredient {
   String get nom;
   bool get vegetarien;
@@ -121,7 +83,7 @@ class Olives extends Ingredient {
 }
 
 class Pepperoni extends Ingredient {
-  Pepperoni({this.vegetarien = true});
+  Pepperoni({this.vegetarien = false});
   @override
   String get nom => 'Pepperoni';
   @override
@@ -129,31 +91,12 @@ class Pepperoni extends Ingredient {
 }
 
 class Jambon extends Ingredient {
-  Jambon({this.vegetarien = true});
+  Jambon({this.vegetarien = false});
   @override
   String get nom => 'Jambon';
   @override
   bool vegetarien;
 }
-
-// Ingredient getIngredientFromMap(String ingredientStr) {
-//   switch (ingredientStr.toLowerCase()) {
-//     case 'fromage':
-//       return Fromage();
-//     case 'poivron':
-//       return Poivron();
-//     case 'champignon':
-//       return Champignon();
-//     case 'olives':
-//       return Olives();
-//     case 'pepperoni':
-//       return Pepperoni();
-//     case 'jambon':
-//       return Jambon();
-//     default:
-//       throw Exception('Ingrédient inconnu: $ingredientStr');
-//   }
-// }
 
 Ingredient getIngredientFromMap(Map<String, dynamic> ingredientMap) {
   String nom = ingredientMap['nom'] as String;

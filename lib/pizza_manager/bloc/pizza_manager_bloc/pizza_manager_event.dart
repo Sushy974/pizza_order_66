@@ -7,3 +7,12 @@ abstract class PizzaManagerEvent extends Equatable {
 }
 
 class EnChargement extends PizzaManagerEvent {}
+
+class EnFiltre extends PizzaManagerEvent {
+  const EnFiltre({required this.menu});
+  final Type menu;
+  @override
+  List<Object?> get props => [
+        menu,
+      ];
+}

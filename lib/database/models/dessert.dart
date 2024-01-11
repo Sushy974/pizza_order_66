@@ -16,6 +16,9 @@ class Dessert implements Article {
   final bool vegetarien;
 
   @override
+  Type get type => Dessert;
+
+  @override
   Map<String, dynamic> toJSON() {
     return {
       'type': type.toString(),
@@ -24,7 +27,4 @@ class Dessert implements Article {
       'vegetarien': vegetarien,
     };
   }
-
-  @override
-  Type get type => Dessert;
 }

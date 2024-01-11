@@ -3,8 +3,13 @@ import 'package:pizza_order_66/database/data_api/data_api.dart';
 import 'package:pizza_order_66/database/models/article.dart';
 
 class FirestoreApi implements DataApi {
+  FirestoreApi(this.firestoreInstance) {
+    firestoreInstance.useFirestoreEmulator('localhost', 8080);
+  }
+  final FirebaseFirestore firestoreInstance;
   final CollectionReference articleCollection =
       FirebaseFirestore.instance.collection('Article');
+
   @override
   Future<void> saveArticle(Article article) async {
     return articleCollection.doc().set(article.toJSON());
@@ -13,7 +18,11 @@ class FirestoreApi implements DataApi {
   Stream<List<Article>> getArticles() {
     return articleCollection.snapshots().map((snapshot) {
       return snapshot.docs.map((doc) {
-        return Article.fromJSON(doc.data()! as Map<String, dynamic>);
+        print(doc.id);
+        return Article.fromJSON(
+          map: doc.data()! as Map<String, dynamic>,
+          uid: doc.id,
+        );
       }).toList();
     });
   }
