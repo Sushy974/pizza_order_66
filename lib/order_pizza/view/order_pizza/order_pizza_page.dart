@@ -6,6 +6,8 @@ import 'package:pizza_order_66/order_pizza/view/order_pizza/order_pizza_view.dar
 class OrderPizzaPage extends StatelessWidget {
   const OrderPizzaPage({super.key});
 
+  static Page<dynamic> page() =>
+      const MaterialPage<void>(child: OrderPizzaPage());
   @override
   Widget build(BuildContext context) {
     return Scaffold(

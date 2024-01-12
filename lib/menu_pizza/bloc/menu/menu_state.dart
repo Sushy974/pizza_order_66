@@ -1,10 +1,27 @@
 part of 'menu_bloc.dart';
 
-abstract class MenuState extends Equatable {
-  const MenuState();
-}
+class MenuState extends Equatable {
+  const MenuState({
+    this.listeArticle = const [],
+    this.listeArticleFiltrer = const [],
+  });
 
-class MenuInitial extends MenuState {
+  final List<Article> listeArticle;
+  final List<Article> listeArticleFiltrer;
+
+  MenuState copyWith({
+    List<Article>? listeArticle,
+    List<Article>? listeArticleFiltrer,
+  }) {
+    return MenuState(
+      listeArticle: listeArticle ?? this.listeArticle,
+      listeArticleFiltrer: listeArticleFiltrer ?? this.listeArticleFiltrer,
+    );
+  }
+
   @override
-  List<Object> get props => [];
+  List<Object> get props => [
+        listeArticle,
+        listeArticleFiltrer,
+      ];
 }

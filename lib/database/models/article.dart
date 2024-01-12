@@ -52,7 +52,7 @@ abstract class Article {
 
       return Pizza(
         uid: uid,
-        vegetarien: map['vegi'] as bool,
+        vegetarien: (map['vegi'] as bool?) ?? false,
         description: map['description'] as String,
         nom: map['nom'] as String,
         basePizza: getBasePizzaFromString(map['base_pizza'] as String),

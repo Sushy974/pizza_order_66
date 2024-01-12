@@ -1,5 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pizza_order_66/app/enum/enum_menu.dart';
+import 'package:pizza_order_66/database/models/article.dart';
+import 'package:pizza_order_66/database/models/boisson.dart';
+import 'package:pizza_order_66/database/models/dessert.dart';
+import 'package:pizza_order_66/database/models/pizza.dart';
+import 'package:pizza_order_66/menu_pizza/bloc/menu/menu_bloc.dart';
+import 'package:pizza_order_66/widget/boisson_view.dart';
+import 'package:pizza_order_66/widget/dessert_view.dart';
+import 'package:pizza_order_66/widget/pizza_view.dart';
 
 class MenuView extends StatelessWidget {
   const MenuView({super.key});
@@ -18,7 +27,7 @@ class MenuView extends StatelessWidget {
         Expanded(
           flex: 4,
           child: Container(
-            color: Theme.of(context).canvasColor,
+            color: Theme.of(context).primaryColor,
             child: const MenuList(),
           ),
         ),
@@ -52,10 +61,15 @@ class _Slector extends StatelessWidget {
               color: Colors.transparent,
               child: Padding(
                 padding: const EdgeInsets.all(8),
-                child: Text(
-                  Menu.values.map((e) => e.name).toList()[index],
-                  style: const TextStyle(
-                    fontSize: 20,
+                child: InkWell(
+                  onTap: () => context.read<MenuBloc>().add(
+                        EnFiltre(menu: Menu.values[index].type),
+                      ),
+                  child: Text(
+                    Menu.values.map((e) => e.name).toList()[index],
+                    style: const TextStyle(
+                      fontSize: 20,
+                    ),
                   ),
                 ),
               ),
@@ -75,6 +89,7 @@ class MenuList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final state = context.watch<MenuBloc>().state;
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -82,61 +97,41 @@ class MenuList extends StatelessWidget {
             child: ListView.builder(
               shrinkWrap: true,
               primary: true,
-              itemBuilder: (context, index) => Padding(
-                padding: const EdgeInsets.all(8),
-                child: Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Expanded(
-                          child: Text(
-                            'Nom Pizza',
-                            style: TextStyle(
-                              fontSize: 20,
-                            ),
-                          ),
-                        ),
-                        const Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Base Pizza',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                ),
-                              ),
-                              Icon(Icons.eco, color: Colors.lightGreen),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                // height: 100,
-                                child: Expanded(
-                                  child: ListView.builder(
-                                    shrinkWrap: true,
-                                    primary: true,
-                                    itemBuilder: (context, index) =>
-                                        const Text('Ingrediant'),
-                                    itemCount: 3,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+              itemBuilder: (context, index) {
+                if (state.listeArticleFiltrer[index].type ==
+                    TypeArticle.pizza.type) {
+                  return PizzaView(
+                    pizza: state.listeArticleFiltrer[index] as Pizza,
+                    index: index,
+                  );
+                }
+                if (state.listeArticleFiltrer[index].type ==
+                    TypeArticle.boisson.type) {
+                  return BoissonView(
+                    boisson: state.listeArticleFiltrer[index] as Boisson,
+                    index: index,
+                  );
+                }
+                if (state.listeArticleFiltrer[index].type ==
+                    TypeArticle.dessert.type) {
+                  return DessertView(
+                    dessert: state.listeArticleFiltrer[index] as Dessert,
+                    index: index,
+                  );
+                }
+                return Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Card(
+                    color: Colors.white,
+                    child: Text(
+                      'Article inconnue : ${state.listeArticleFiltrer[index].uid}',
+                      style: const TextStyle(color: Colors.black),
+                      textAlign: TextAlign.center,
                     ),
                   ),
-                ),
-              ),
-              itemCount: 30,
+                );
+              },
+              itemCount: state.listeArticleFiltrer.length,
             ),
           ),
         ],

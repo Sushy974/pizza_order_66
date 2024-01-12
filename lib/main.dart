@@ -11,8 +11,10 @@ import 'package:pizza_order_66/app/view/app.dart';
 import 'package:pizza_order_66/bootstrap.dart';
 import 'package:pizza_order_66/database/data_repository/data_repository.dart';
 import 'package:pizza_order_66/database/firestore_api/firestore_api.dart';
+import 'package:pizza_order_66/database/firestore_api/firestore_auth_api.dart';
+import 'package:pizza_order_66/firebase_options.dart';
 
-import 'firebase_options.dart';
+import 'database/data_repository/data_auth_repository.dart';
 
 void main() async {
   await bootstrap(() async {
@@ -20,10 +22,20 @@ void main() async {
     await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform);
 
-    return RepositoryProvider(
-      create: (BuildContext context) {
-        return DataRepository(api: FirestoreApi(FirebaseFirestore.instance));
-      },
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider(
+          create: (BuildContext context) {
+            return DataRepository(
+                api: FirestoreApi(FirebaseFirestore.instance));
+          },
+        ),
+        RepositoryProvider(
+          create: (BuildContext context) {
+            return DataAuthRepository(api: FirestoreAuthApi());
+          },
+        ),
+      ],
       child: const App(),
     );
   });

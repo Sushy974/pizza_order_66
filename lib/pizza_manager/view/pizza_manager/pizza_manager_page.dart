@@ -8,6 +8,9 @@ import '../../../database/data_repository/data_repository.dart';
 class PizzaManagerPage extends StatelessWidget {
   const PizzaManagerPage({super.key});
 
+  static Page<dynamic> page() =>
+      const MaterialPage<void>(child: PizzaManagerPage());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

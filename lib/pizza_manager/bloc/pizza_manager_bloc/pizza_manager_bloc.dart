@@ -27,8 +27,10 @@ class PizzaManagerBloc extends Bloc<PizzaManagerEvent, PizzaManagerState> {
   ) async {
     await emit.forEach(
       _dataRepository.getArticles(),
-      onData: (data) =>
-          state.copyWith(listeArticle: data, listeArticleFiltrer: data),
+      onData: (data) => state.copyWith(
+        listeArticle: data,
+        listeArticleFiltrer: data,
+      ),
     );
   }
 
