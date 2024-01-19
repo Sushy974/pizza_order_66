@@ -29,16 +29,26 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     FirebaseAuth.instance.authStateChanges().listen((User? user) {});
   }
 
-  FutureOr<void> _onUserChange(
+  Future<FutureOr<void>> _onUserChange(
     UserChange event,
     Emitter<AppState> emit,
-  ) {
+  ) async {
     emit(
       state.copyWith(user: event.user),
     );
     if (event.user != null) {
       emit(state.copyWith(appStatus: AppStatus.user));
-      print(event.user?.);
+      await event.user?.getIdTokenResult().then((IdTokenResult tokenResult) {
+        if (tokenResult.claims!.containsKey('role')) {
+          final userRole = tokenResult.claims?['role'];
+          if (userRole == 'admin') {
+            emit(state.copyWith(appStatus: AppStatus.admin));
+          }
+          if (userRole == 'cook') {
+            emit(state.copyWith(appStatus: AppStatus.cook));
+          }
+        }
+      });
     }
     if (event.user == null) {
       emit(state.copyWith(appStatus: AppStatus.unauthenticated));

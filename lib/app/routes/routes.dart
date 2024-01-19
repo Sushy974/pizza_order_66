@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:pizza_order_66/app/app_bloc/app_bloc.dart';
-import 'package:pizza_order_66/authentification/connexion/view/connexion_page.dart';
-import 'package:pizza_order_66/menu_pizza/view/menu/menu_page.dart';
 import 'package:pizza_order_66/order_pizza/view/order_pizza/order_pizza_page.dart';
 import 'package:pizza_order_66/pizza_manager/view/pizza_manager/pizza_manager_page.dart';
+
+import '../../authentification/connexion/view/connexion_page.dart';
+import '../../menu_pizza/view/menu/menu_page.dart';
 
 List<Page<dynamic>> onGenerateAppViewPages(
   AppStatus state,

@@ -4,7 +4,9 @@ import 'package:pizza_order_66/database/models/article.dart';
 
 class FirestoreApi implements DataApi {
   FirestoreApi(this.firestoreInstance) {
-    firestoreInstance.useFirestoreEmulator('localhost', 8080);
+    firestoreInstance
+      ..useFirestoreEmulator('localhost', 8080)
+      ..enablePersistence();
   }
   final FirebaseFirestore firestoreInstance;
   final CollectionReference articleCollection =

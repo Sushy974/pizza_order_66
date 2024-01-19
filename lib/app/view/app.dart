@@ -2,10 +2,9 @@ import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pizza_order_66/app/app_bloc/app_bloc.dart';
+import 'package:pizza_order_66/app/routes/routes.dart';
+import 'package:pizza_order_66/database/data_repository/data_auth_repository.dart';
 import 'package:pizza_order_66/l10n/l10n.dart';
-
-import '../../database/data_repository/data_auth_repository.dart';
-import '../routes/routes.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -44,13 +43,16 @@ class App extends StatelessWidget {
         ),
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
-        home: Builder(builder: (context) {
-          return Builder(
-            builder: (context) => FlowBuilder(
+        home: Builder(
+          builder: (context) {
+            return Builder(
+              builder: (context) => FlowBuilder(
                 state: context.select((AppBloc bloc) => bloc.state.appStatus),
-                onGeneratePages: onGenerateAppViewPages),
-          );
-        }),
+                onGeneratePages: onGenerateAppViewPages,
+              ),
+            );
+          },
+        ),
       ),
     );
   }
