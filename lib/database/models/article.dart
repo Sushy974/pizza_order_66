@@ -35,7 +35,6 @@ abstract class Article {
         vegetarien: vegetarien,
       );
     }
-
     return Boisson(description: description, nom: nom);
   }
 
@@ -44,9 +43,9 @@ abstract class Article {
     required String uid,
   }) {
     if (map['type'] == TypeArticle.pizza.type.toString()) {
-      var listMaps = map['liste_ingredient'] as List<dynamic>;
-      var listeIngredient = listMaps.map((ingredientMap) {
-        var ingrMap = ingredientMap as Map<String, dynamic>;
+      final listMaps = map['liste_ingredient'] as List<dynamic>;
+      final listeIngredient = listMaps.map((ingredientMap) {
+        final ingrMap = ingredientMap as Map<String, dynamic>;
         return getIngredientFromMap(ingrMap);
       }).toList();
 

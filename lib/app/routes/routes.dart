@@ -15,6 +15,8 @@ List<Page<dynamic>> onGenerateAppViewPages(
       return [MenuPage.page()];
     case AppStatus.unauthenticated:
       return [ConnexionPage.page()];
+    case AppStatus.inscription:
+      return [ConnexionPage.page()];
     case AppStatus.admin:
       return [PizzaManagerPage.page()];
     case AppStatus.cook:

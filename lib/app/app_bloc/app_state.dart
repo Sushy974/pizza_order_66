@@ -7,6 +7,8 @@ enum AppStatus {
 
   cook,
   unauthenticated,
+
+  inscription,
 }
 
 class AppState {
